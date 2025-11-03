@@ -7,22 +7,29 @@ part of the application.
 
 ## Summary of the Infrastructure
 
-  Component                   Description
-  --------------------------- ----------------------------------
-  VPC + Subnets               Base network for the application
-  Internet Gateway & Routes   Allow internet access
-  3 EC2 Instances             Each one serves a separate path
-  ALB                         Handles HTTP requests
-  3 Target Groups             Each path = its own TG
-  Listener Rules              Forward traffic based on path
+  Component                           Description
+  ---------------------------         ----------------------------------
+  VPC + Subnets                       Base network for the application
+  
+  Internet Gateway & Routes           Allow internet access
+  
+  3 EC2 Instances                     Each one serves a separate path
+  
+  ALB                                 Handles HTTP requests
+ 
+  3 Target Groups                     Each path = its own TG
+  
+  Listener Rules                      Forward traffic based on path
 
 Paths used:
 
-  URL Path       Target Instance
-  -------------- -----------------------------------
-  `/`            Instance A (Homepage)
-  `/images/`     Instance B (Images service)
-  `/register/`   Instance C (Registration service)
+  URL Path           Target Instance
+  --------------     -----------------------------------
+  `/`                  Instance A (Homepage)
+  
+  `/images/`           Instance B (Images service)
+  
+  `/register/`           Instance C (Registration service)
 
 Each EC2 instance uses `user_data` to automatically install and
 configure Nginx on first boot.
