@@ -27,58 +27,20 @@ part of the application.
 ## 🔗 Architecture Diagram
 
 ```mermaid
-graph TB
-    subgraph "AWS Cloud"
-        ALB[Application Load Balancer]
-        
-        subgraph "Listener Rules"
-            R1[Rule: / → TG-A]
-            R2[Rule: /images/* → TG-B]
-            R3[Rule: /register/* → TG-C]
-        end
-        
-        subgraph "Target Groups"
-            TG_A[Target Group A]
-            TG_B[Target Group B] 
-            TG_C[Target Group C]
-        end
-        
-        subgraph "EC2 Instances"
-            INST_A[Instance A<br/>Homepage]
-            INST_B[Instance B<br/>Images]
-            INST_C[Instance C<br/>Register]
-        end
-        
-        ALB --> R1
-        ALB --> R2
-        ALB --> R3
-        R1 --> TG_A
-        R2 --> TG_B
-        R3 --> TG_C
-        TG_A --> INST_A
-        TG_B --> INST_B
-        TG_C --> INST_C
-    end
+flowchart TB
+    User[User] --> ALB[Application Load Balancer]
     
-    User[User] --> ALB
-------------------------------------------------------------------------
-
-## ALB Target Groups
-
-We created 3 target groups, one for each path. Then we attached each EC2
-instance to the corresponding target group.
-
-Example:
-
-  Target Group   Path Served
-  -------------- -------------
-  TG‑A           `/`
-  TG‑B           `/images`
-  TG‑C           `/register`
-
-Listener rules forward traffic to the correct group.
-
-------------------------------------------------------------------------
+    ALB --> Rule1[Rule: Default]
+    ALB --> Rule2[Rule: /images/*]
+    ALB --> Rule3[Rule: /register/*]
+    
+    Rule1 --> TGA[Target Group A]
+    Rule2 --> TGB[Target Group B]
+    Rule3 --> TGC[Target Group C]
+    
+    TGA --> InstanceA[Instance A<br/>Homepage]
+    TGB --> InstanceB[Instance B<br/>Images]
+    TGC --> InstanceC[Instance C<br/>Register]
 ## Phase one config our Terraform Cloud (Remote Backend):
 We have already configured Terraform Cloud in the previous project, so
 here is the short version:
