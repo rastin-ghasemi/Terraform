@@ -5,35 +5,62 @@ an **Application Load Balancer (ALB)** that performs **path‑based
 routing** to multiple EC2 instances. Each instance serves a different
 part of the application.
 
-## Summary of the Infrastructure
+## 📋 Infrastructure Summary
 
-  Component                           Description
-  ---------------------------         ----------------------------------
-  VPC + Subnets                       Base network for the application
-  
-  Internet Gateway & Routes           Allow internet access
-  
-  3 EC2 Instances                     Each one serves a separate path
-  
-  ALB                                 Handles HTTP requests
- 
-  3 Target Groups                     Each path = its own TG
-  
-  Listener Rules                      Forward traffic based on path
+| Component | Description |
+|-----------|-------------|
+| **VPC + Subnets** | Base network for the application |
+| **Internet Gateway & Routes** | Allow internet access |
+| **3 EC2 Instances** | Each serves a separate path |
+| **Application Load Balancer** | Handles HTTP requests and routing |
+| **3 Target Groups** | Each path = its own target group |
+| **Listener Rules** | Forward traffic based on URL paths |
 
-Paths used:
+## 🛣️ URL Path Routing
 
-  URL Path           Target Instance
-  --------------     -----------------------------------
-  `/`                  Instance A (Homepage)
-  
-  `/images/`           Instance B (Images service)
-  
-  `/register/`           Instance C (Registration service)
+| URL Path | Target Instance | Description |
+|----------|-----------------|-------------|
+| `/` | **Instance A** | Homepage service |
+| `/images/` | **Instance B** | Images service |
+| `/register/` | **Instance C** | Registration service |
 
-Each EC2 instance uses `user_data` to automatically install and
-configure Nginx on first boot.
+## 🔗 Architecture Diagram
 
+```mermaid
+graph TB
+    subgraph "AWS Cloud"
+        ALB[Application Load Balancer]
+        
+        subgraph "Listener Rules"
+            R1[Rule: / → TG-A]
+            R2[Rule: /images/* → TG-B]
+            R3[Rule: /register/* → TG-C]
+        end
+        
+        subgraph "Target Groups"
+            TG_A[Target Group A]
+            TG_B[Target Group B] 
+            TG_C[Target Group C]
+        end
+        
+        subgraph "EC2 Instances"
+            INST_A[Instance A<br/>Homepage]
+            INST_B[Instance B<br/>Images]
+            INST_C[Instance C<br/>Register]
+        end
+        
+        ALB --> R1
+        ALB --> R2
+        ALB --> R3
+        R1 --> TG_A
+        R2 --> TG_B
+        R3 --> TG_C
+        TG_A --> INST_A
+        TG_B --> INST_B
+        TG_C --> INST_C
+    end
+    
+    User[User] --> ALB
 ------------------------------------------------------------------------
 
 ## ALB Target Groups
