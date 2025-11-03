@@ -24,23 +24,7 @@ part of the application.
 | `/images/` | **Instance B** | Images service |
 | `/register/` | **Instance C** | Registration service |
 
-## 🔗 Architecture Diagram
 
-```mermaid
-flowchart TB
-    User[User] --> ALB[Application Load Balancer]
-    
-    ALB --> Rule1[Rule: Default]
-    ALB --> Rule2[Rule: /images/*]
-    ALB --> Rule3[Rule: /register/*]
-    
-    Rule1 --> TGA[Target Group A]
-    Rule2 --> TGB[Target Group B]
-    Rule3 --> TGC[Target Group C]
-    
-    TGA --> InstanceA[Instance A<br/>Homepage]
-    TGB --> InstanceB[Instance B<br/>Images]
-    TGC --> InstanceC[Instance C<br/>Register]
 ## Phase one config our Terraform Cloud (Remote Backend):
 We have already configured Terraform Cloud in the previous project, so
 here is the short version:
