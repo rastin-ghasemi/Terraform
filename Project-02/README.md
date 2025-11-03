@@ -131,7 +131,7 @@ Once confirmed, destroy all resources to prepare for the next step.
 ## ☁️ Terraform Cloud (Remote Backend)
 
 ### Step 1: Create a Terraform Cloud Account
-Go to [Terraform Cloud](https://app.terraform.io/app/organizations)  
+Go to [Terraform Cloud](https://app.terraform.io/session)  
 Create an **account**, **organization**, and **workspace**.
 
 ### Step 2: Login via CLI
